@@ -1,22 +1,21 @@
 <?php
 
-namespace backend\forms\Blog;
+namespace backend\forms\News;
 
+use core\entities\News\Category;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use core\entities\Blog\Tag;
 
-class TagSearch extends Model
+class CategorySearch extends Model
 {
     public $id;
     public $name;
-    public $slug;
 
     public function rules(): array
     {
         return [
             [['id'], 'integer'],
-            [['name', 'slug'], 'safe'],
+            ['name', 'string'],
         ];
     }
 
@@ -26,12 +25,12 @@ class TagSearch extends Model
      */
     public function search(array $params): ActiveDataProvider
     {
-        $query = Tag::find();
+        $query = Category::find()->andWhere(['>', 'depth', 0]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['name' => SORT_ASC]
+                'defaultOrder' => ['lft' => SORT_ASC]
             ]
         ]);
 
@@ -47,8 +46,7 @@ class TagSearch extends Model
         ]);
 
         $query
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'slug', $this->slug]);
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

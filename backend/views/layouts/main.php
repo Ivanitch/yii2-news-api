@@ -57,6 +57,15 @@ AppAsset::register($this);
                 ]
             ],
             [
+                'label' => 'Новостная лента',
+                'items' => [
+                    [
+                        'label' => 'Категории',
+                        'url' => ['/news/category/index']
+                    ]
+                ]
+            ],
+            [
                 'label' => 'Информация <i class="fa fa-info-circle"></i>',
                 'url' => [
                     '#'
