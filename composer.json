@@ -12,6 +12,7 @@
     },
     "require": {
         "php": ">=7.4.5",
+        "ext-json": "*",
         "fishvision/yii2-migrate": "*",
         "kartik-v/yii2-field-range": "dev-master",
         "kartik-v/yii2-widget-datepicker": "^1.4",
