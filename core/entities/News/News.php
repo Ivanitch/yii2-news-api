@@ -43,7 +43,7 @@ class News extends ActiveRecord
         $model->slug = $slug;
         $model->meta = $meta;
         $model->status = self::STATUS_DRAFT;
-        $model->created_at = time();
+        $model->created_at = time(); // Или передавать данные календаря
         return $model;
     }
 

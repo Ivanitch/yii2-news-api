@@ -25,10 +25,10 @@ return [
             'pattern' => 'category/<id:\d+>',
             'route' => 'news/news/category'
         ],
-        // Post
+        //=== News
         [
-            'pattern' => 'api/<slug:[\w\-]+>',
-            'route' => 'blog/blog/post',
+            'pattern' => '<slug:[\w\-]+>',
+            'route' => 'news/news/view',
             //'suffix' => '.html',
         ],
 

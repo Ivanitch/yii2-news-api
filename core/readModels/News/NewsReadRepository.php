@@ -4,6 +4,8 @@ namespace core\readModels\News;
 
 use core\entities\News\Category;
 use core\entities\News\News;
+use core\entities\News\queries\NewsQuery;
+use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
 class NewsReadRepository
@@ -27,8 +29,25 @@ class NewsReadRepository
     {
         $query = News::find()->alias('p')->active();
         $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
-        $query->andWhere(['or', ['p.category_id' => $ids], ['ca.category_id' => $ids]]);
+        $query->andWhere(['or', ['p.category_id' => $ids], ['category_id' => $ids]]);
         $query->groupBy('p.id');
-        return $query->all();
+        return $this->getProvider($query);
+    }
+
+    private function getProvider(NewsQuery $query): ActiveDataProvider
+    {
+        return new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+            ],
+            'pagination' => [
+                'pageSize' => 20,
+                'pageParam' => 'page',
+                'forcePageParam' => false,
+                'pageSizeParam'  => false,
+                'validatePage'   => false,
+            ]
+        ]);
     }
 }
