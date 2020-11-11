@@ -19,6 +19,7 @@ class m201111_090612_create_news_table extends Migration
             'content' => $this->text(),
             'slug' => $this->string()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
+            'status' => $this->smallInteger()->defaultValue(0),
             'meta_json' => $this->json()->notNull(),
         ], $tableOptions);
 
