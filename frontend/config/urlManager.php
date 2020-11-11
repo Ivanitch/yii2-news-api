@@ -20,11 +20,10 @@ return [
         'reset-password' => 'auth/reset/request',
         'confirm-password' => 'auth/reset/confirm',
 
-
-        // Category
+        //=== Category
         [
-            'pattern' => 'api/category/<slug:[\w\-]+>',
-            'route' => 'blog/blog/category'
+            'pattern' => 'category/<id:\d+>',
+            'route' => 'news/news/category'
         ],
         // Post
         [
