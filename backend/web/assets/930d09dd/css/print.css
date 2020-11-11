@@ -1,0 +1,8 @@
+@media print {
+    body{margin:0.5in;}
+    *{background:#fff !important;color:#000 !important;float:none !important;width:auto !important;height:auto !important;}
+    a{border:0;text-decoration:none;}
+    a img{border:0}
+    a[href^=http]:after {content:" <" attr(href) ">";}
+    footer.footer{display: none}
+}

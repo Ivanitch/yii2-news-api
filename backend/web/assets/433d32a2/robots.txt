@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /*.php
+Disallow: /search
+
+Sitemap: https://site.com/sitemap.xml

@@ -1,0 +1,12 @@
+#not_found {
+
+}
+@media only screen and (max-width: 767px) {
+    .not_found .not_found-404 {
+        height: 110px;
+        line-height: 110px;
+    }
+    .not_found .not_found-404 h1 {
+        font-size: 120px;
+    }
+}
