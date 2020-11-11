@@ -7,5 +7,6 @@ return [
     'showScriptName' => false,
     'rules' => [
         'POST auth' => 'site/login',
+        'GET profile' => 'profile/index',
     ],
 ];
