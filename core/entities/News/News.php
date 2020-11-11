@@ -5,9 +5,9 @@ namespace core\entities\News;
 use core\entities\News\queries\NewsQuery;
 use core\entities\behaviors\MetaBehavior;
 use core\entities\Meta;
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-
 /**
  * @property integer $id
  * @property integer $category_id
@@ -20,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property Meta $meta
  * @property Category $category
  * @property Category[] $categories
+ * @property CategoryAssignment[] $categoryAssignments
  */
 class News extends ActiveRecord
 {
@@ -97,16 +98,60 @@ class News extends ActiveRecord
         return $this->title ?: $this->name;
     }
 
+    public function assignCategory($id): void
+    {
+        $assignments = $this->categoryAssignments;
+        foreach ($assignments as $assignment) {
+            if ($assignment->isForCategory($id)) {
+                return;
+            }
+        }
+        $assignments[] = CategoryAssignment::create($id);
+        $this->categoryAssignments = $assignments;
+    }
+
+    public function revokeCategory($id): void
+    {
+        $assignments = $this->categoryAssignments;
+        foreach ($assignments as $i => $assignment) {
+            if ($assignment->isForCategory($id)) {
+                unset($assignments[$i]);
+                $this->categoryAssignments = $assignments;
+                return;
+            }
+        }
+        throw new \DomainException('Assignment is not found.');
+    }
+
+    public function revokeCategories(): void
+    {
+        $this->categoryAssignments = [];
+    }
+
     // ##########################
     public function getCategory(): ActiveQuery
     {
         return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
+    public function getCategoryAssignments(): ActiveQuery
+    {
+        return $this->hasMany(CategoryAssignment::class, ['news_id' => 'id']);
+    }
+
+    public function getCategories(): ActiveQuery
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])->via('categoryAssignments');
+    }
+
     public function behaviors(): array
     {
         return [
-            MetaBehavior::class
+            MetaBehavior::class,
+            [
+                'class' => SaveRelationsBehavior::class,
+                'relations' => ['categoryAssignments'],
+            ],
         ];
     }
 

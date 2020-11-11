@@ -21,4 +21,9 @@ class CategoryAssignment extends ActiveRecord
         $assignment->category_id = $categoryId;
         return $assignment;
     }
+
+    public function isForCategory($id): bool
+    {
+        return $this->category_id == $id;
+    }
 }

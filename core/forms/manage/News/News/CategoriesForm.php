@@ -10,11 +10,13 @@ use yii\helpers\ArrayHelper;
 class CategoriesForm extends Model
 {
     public $main;
+    public $others = [];
 
     public function __construct(News $model = null, $config = [])
     {
         if ($model) {
             $this->main = $model->category_id;
+            $this->others = ArrayHelper::getColumn($model->categoryAssignments, 'category_id');
         }
         parent::__construct($config);
     }
@@ -31,6 +33,8 @@ class CategoriesForm extends Model
         return [
             ['main', 'required'],
             ['main', 'integer'],
+            ['others', 'each', 'rule' => ['integer']],
+            ['others', 'default', 'value' => []],
         ];
     }
 }

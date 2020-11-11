@@ -8,20 +8,24 @@ use core\forms\manage\News\News\NewsCreateForm;
 use core\forms\manage\News\News\NewsEditForm;
 use core\repositories\News\CategoryRepository;
 use core\repositories\News\NewsRepository;
+use core\services\TransactionManager;
 use yii\helpers\Inflector;
 
 class NewsManageService
 {
     private $news;
     private $categories;
+    private $transaction;
 
     public function __construct(
         NewsRepository $news,
-        CategoryRepository $categories
+        CategoryRepository $categories,
+        TransactionManager $transaction
     )
     {
         $this->news = $news;
         $this->categories = $categories;
+        $this->transaction = $transaction;
     }
 
     public function create(NewsCreateForm $form): News
@@ -39,6 +43,11 @@ class NewsManageService
                 $form->meta->description
             )
         );
+
+        foreach ($form->categories->others as $otherId) {
+            $category = $this->categories->get($otherId);
+            $model->assignCategory($category->id);
+        }
 
         $this->news->save($model);
         return $model;
@@ -61,7 +70,15 @@ class NewsManageService
         );
 
         $model->changeMainCategory($category->id);
-        $this->news->save($model);
+
+        $this->transaction->wrap(function () use ($model, $form) {
+            $model->revokeCategories();
+            foreach ($form->categories->others as $otherId) {
+                $category = $this->categories->get($otherId);
+                $model->assignCategory($category->id);
+            }
+            $this->news->save($model);
+        });
     }
 
     public function activate($id): void

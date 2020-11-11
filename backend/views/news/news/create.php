@@ -14,12 +14,19 @@ $this->params['breadcrumbs'][] = $this->title;
     'options' => ['enctype'=>'multipart/form-data']
 ]); ?>
 <div class="box box-default">
+    <div class="box-header with-border">Categories</div>
     <div class="row">
         <div class="col-md-6">
             <div class="box box-default">
-                <div class="box-header with-border">Categories</div>
                 <div class="box-body">
                     <?= $form->field($model->categories, 'main')->dropDownList($model->categories->categoriesList(), ['prompt' => '']) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-body">
+                    <?= $form->field($model->categories, 'others')->checkboxList($model->categories->categoriesList()) ?>
                 </div>
             </div>
         </div>

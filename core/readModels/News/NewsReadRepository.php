@@ -27,9 +27,10 @@ class NewsReadRepository
 
     public function getAllByCategory(Category $category)
     {
-        $query = News::find()->alias('p')->active();
+        $query = News::find()->select(['name', 'slug'])->alias('p')->active();
         $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
-        $query->andWhere(['or', ['p.category_id' => $ids], ['category_id' => $ids]]);
+        $query->joinWith(['categoryAssignments ca'], false);
+        $query->andWhere(['or', ['p.category_id' => $ids], ['ca.category_id' => $ids]]);
         $query->groupBy('p.id');
         return $this->getProvider($query);
     }
