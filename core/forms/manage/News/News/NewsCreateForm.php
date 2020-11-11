@@ -13,6 +13,7 @@ use core\forms\manage\MetaForm;
 class NewsCreateForm extends CompositeForm
 {
     public $name;
+    public $title;
     public $content;
     public $slug;
 
