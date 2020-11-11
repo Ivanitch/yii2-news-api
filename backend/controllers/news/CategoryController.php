@@ -4,6 +4,7 @@ namespace backend\controllers\news;
 
 use core\entities\News\Category;
 use core\forms\manage\News\CategoryForm;
+use core\services\CacheService;
 use core\services\manage\News\CategoryManageService;
 use Yii;
 use backend\forms\News\CategorySearch;
@@ -14,16 +15,19 @@ use yii\filters\VerbFilter;
 class CategoryController extends Controller
 {
     private $service;
+    private $cacheService;
 
     public function __construct(
         $id,
         $module,
         CategoryManageService $service,
+        CacheService $cache,
         $config = []
     )
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
+        $this->cacheService = $cache;
     }
 
     public function behaviors(): array
@@ -72,6 +76,7 @@ class CategoryController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $category = $this->service->create($form);
+                $this->clearCache();
                 Yii::$app->session->setFlash('success', 'Категория добавлена!');
                 return $this->redirect(['view', 'id' => $category->id]);
             } catch (\DomainException $e) {
@@ -95,6 +100,7 @@ class CategoryController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->service->edit($category->id, $form);
+                $this->clearCache();
                 Yii::$app->session->setFlash('success', 'Категория изменена!');
                 return $this->redirect(['view', 'id' => $category->id]);
             } catch (\DomainException $e) {
@@ -116,6 +122,7 @@ class CategoryController extends Controller
     {
         try {
             $this->service->remove($id);
+            $this->clearCache();
             Yii::$app->session->setFlash('success', 'Категория удалена!');
         } catch (\DomainException $e) {
             Yii::$app->errorHandler->logException($e);
@@ -131,6 +138,7 @@ class CategoryController extends Controller
     public function actionMoveUp($id)
     {
         $this->service->moveUp($id);
+        $this->clearCache();
         Yii::$app->session->setFlash('success', 'Категория перемещена вверх!');
         return $this->redirect(['index']);
     }
@@ -142,6 +150,7 @@ class CategoryController extends Controller
     public function actionMoveDown($id)
     {
         $this->service->moveDown($id);
+        $this->clearCache();
         Yii::$app->session->setFlash('success', 'Категория перемещена вниз!');
         return $this->redirect(['index']);
     }
@@ -157,5 +166,12 @@ class CategoryController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function clearCache()
+    {
+        $this->cacheService->deleteTag([
+            Category::CACHE_ASIDE
+        ]);
     }
 }
