@@ -121,4 +121,19 @@ class News extends ActiveRecord
     {
         return new NewsQuery(static::class);
     }
+
+
+    public function getParentsCategories(): string
+    {
+        $parent = $this->category->parent;
+        if ($parent->id === 1) {
+            $parentName = '';
+        } else {
+            $parentName = $parent->name . ' &rarr; ';
+            if($parent->parent->id !== 1) {
+                $parentName = $parent->parent->name.' &rarr; ' . $parent->name . ' &rarr; ';
+            }
+        }
+        return $parentName;
+    }
 }

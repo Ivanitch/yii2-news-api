@@ -22,6 +22,7 @@ class NewsEditForm extends CompositeForm
     public function __construct(News $model, $config = [])
     {
         $this->name = $model->name;
+        $this->title = $model->title;
         $this->content = $model->content;
         $this->slug = $model->slug;
         $this->meta = new MetaForm($model->meta);
@@ -34,7 +35,7 @@ class NewsEditForm extends CompositeForm
     {
         return [
             ['name', 'required'],
-            [['slug', 'name'], 'string', 'max' => 255],
+            [['name', 'title', 'slug'], 'string', 'max' => 255],
             [['slug', 'name'], 'unique', 'targetClass' => News::class, 'filter' => $this->model ? ['<>', 'id', $this->model->id] : null],
             ['content', 'string']
         ];

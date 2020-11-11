@@ -15,7 +15,7 @@ class m201111_090612_create_news_table extends Migration
             'id' => $this->primaryKey(),
             'category_id' => $this->integer()->notNull(),
             'name' => $this->string()->notNull(),
-            'title' => $this->string()->notNull(),
+            'title' => $this->string(),
             'content' => $this->text(),
             'slug' => $this->string()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),

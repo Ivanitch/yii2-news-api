@@ -28,7 +28,7 @@ class NewsCreateForm extends CompositeForm
     {
         return [
             ['name', 'required'],
-            [['name', 'slug'], 'string', 'max' => 255],
+            [['name', 'title', 'slug'], 'string', 'max' => 255],
             ['content', 'string'],
             [['name', 'slug'], 'unique', 'targetClass' => News::class],
         ];

@@ -62,6 +62,10 @@ AppAsset::register($this);
                     [
                         'label' => 'Категории',
                         'url' => ['/news/category/index']
+                    ],
+                    [
+                        'label' => 'Новости',
+                        'url' => ['/news/news/index']
                     ]
                 ]
             ],
@@ -138,6 +142,5 @@ AppAsset::register($this);
     <?
     Yii::$app->session->setFlash('error', 'Access is denied!');
     return Yii::$app->getResponse()->redirect(Url::to(['/auth/login']));
-
     ?>
 <? endif; ?>
