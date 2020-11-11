@@ -34,4 +34,9 @@ class NewsRepository
             throw new \RuntimeException('Removing error.');
         }
     }
+
+    public function existsByMainCategory($id): bool
+    {
+        return News::find()->andWhere(['category_id' => $id])->exists();
+    }
 }

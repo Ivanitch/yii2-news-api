@@ -5,14 +5,17 @@ namespace core\services\manage\News;
 use core\entities\News\Category;
 use core\forms\manage\News\CategoryForm;
 use core\repositories\News\CategoryRepository;
+use core\repositories\News\NewsRepository;
 
 class CategoryManageService
 {
     private $categories;
+    private $news;
 
-    public function __construct(CategoryRepository $categories)
+    public function __construct(CategoryRepository $categories, NewsRepository $news)
     {
         $this->categories = $categories;
+        $this->news = $news;
     }
 
     public function create(CategoryForm $form): Category
@@ -60,6 +63,9 @@ class CategoryManageService
     {
         $category = $this->categories->get($id);
         $this->assertIsNotRoot($category);
+        if ($this->news->existsByMainCategory($category->id)) {
+            throw new \DomainException('Unable to remove category with news.');
+        }
         $this->categories->remove($category);
     }
 
