@@ -15,11 +15,6 @@ class CategoryReadRepository
         $this->cacheService = $cacheService;
     }
 
-    public function getRoot(): Category
-    {
-        return Category::find()->roots()->one();
-    }
-
     public function find($id)
     {
         return Category::find()->where(['id' => $id])->andWhere(['>', 'depth', 0])->one();

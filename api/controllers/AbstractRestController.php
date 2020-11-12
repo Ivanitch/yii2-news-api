@@ -42,7 +42,7 @@ abstract class AbstractRestController extends ActiveController
     )
     {
         parent::__construct($id, $module, $config);
-        $this->args = \Yii::$app->request->queryParams;
+        $this->args = \Yii::$app->getRequest()->getBodyParams();
         $this->response = \Yii::$app->getResponse();
     }
 
