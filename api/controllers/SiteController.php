@@ -8,6 +8,9 @@ use yii\rest\Controller;
 
 class SiteController extends Controller
 {
+    /**
+     * @return \api\core\entities\User\Token|LoginForm|null
+     */
     public function actionLogin()
     {
         $model = new LoginForm();
@@ -16,7 +19,10 @@ class SiteController extends Controller
         return $model;
     }
 
-    protected function verbs()
+    /**
+     * @return array|\string[][]
+     */
+    protected function verbs(): array
     {
         return [
             'login' => ['post'],

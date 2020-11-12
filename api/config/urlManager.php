@@ -9,12 +9,6 @@ return [
         'POST auth' => 'site/login',
         'GET profile' => 'profile/index',
 
-//        [
-//            'pluralize' => false,
-//            'class' => 'yii\rest\UrlRule',
-//            'controller' => 'category'
-//        ],
-
         //=== Category
         'POST category' => 'category/create',
         'PUT category/<id:\d+>' => 'category/update',
@@ -22,5 +16,13 @@ return [
         'category/page=<page:\d+>' => 'category/index',
         'category' => 'category/index',
         'category/<id:\d+>' => 'category/view',
+
+        //=== News
+        [
+            'pluralize' => false,
+            'class' => 'yii\rest\UrlRule',
+            'controller' => 'news'
+        ],
+        'news/<id:\d+>/activate' => 'news/activate',
     ],
 ];

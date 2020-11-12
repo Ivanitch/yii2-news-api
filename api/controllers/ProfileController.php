@@ -14,6 +14,9 @@ use yii\rest\Controller;
  */
 class ProfileController extends Controller
 {
+    /**
+     * @return array|array[]
+     */
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -36,6 +39,9 @@ class ProfileController extends Controller
         return $behaviors;
     }
 
+    /**
+     * @return User
+     */
     public function actionIndex()
     {
         return $this->findModel();

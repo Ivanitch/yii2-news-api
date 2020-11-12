@@ -15,13 +15,11 @@ class News extends BaseNews implements Linkable
         ];
     }
 
+    /**
+     * @return string
+     */
     private function news(): string
     {
         return Url::to(['news/view', 'id' => $this->id], true);
-    }
-
-    public function fields()
-    {
-        return ['id', 'name', 'title'];
     }
 }
