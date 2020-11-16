@@ -31,7 +31,8 @@ class NewsSearch extends Model
     public function search(array $params): ActiveDataProvider
     {
         $query = News::find()
-            ->select(['id', 'name']);
+            ->select(['id', 'name'])
+            ->active();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

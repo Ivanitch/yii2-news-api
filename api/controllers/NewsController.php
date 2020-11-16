@@ -6,6 +6,7 @@ use api\core\entities\News\News;
 use api\models\NewsSearch;
 use core\forms\manage\News\News\NewsCreateForm;
 use core\forms\manage\News\News\NewsEditForm;
+use core\readModels\News\NewsReadRepository;
 use core\services\manage\News\NewsManageService;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -21,6 +22,7 @@ class NewsController extends AbstractRestController
      * @var NewsManageService
      */
     private $service;
+    private $repository;
 
     /**
      * NewsController constructor.
@@ -33,11 +35,13 @@ class NewsController extends AbstractRestController
         $id,
         $module,
         NewsManageService $service,
+        NewsReadRepository $repository,
         $config = []
     )
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
+        $this->repository = $repository;
     }
 
     /**
@@ -109,9 +113,18 @@ class NewsController extends AbstractRestController
         unset(
             $actions['create'],
             $actions['update'],
+            $actions['view'],
         );
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
+    }
+
+    public function actionView($id)
+    {
+        if (($model = $this->repository->find($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     /**
