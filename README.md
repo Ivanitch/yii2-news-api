@@ -105,4 +105,10 @@ http://api.example.com/news
   "name":"News name"
 }
 ```
+Publishing news
+----------------------
+When added, news has the "Draft" status. To add news to published (Methods PUT, PATCH):
+```
+http://api.example.com/news/1/activate
+```
 The rest of the news manipulation is similar.
