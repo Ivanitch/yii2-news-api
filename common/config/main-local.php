@@ -29,14 +29,14 @@ return [
             'viewPath' => '@common/mail',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.yandex.ru',
-                'username' => 'www.coder@ya.ru',
-                'password' => 'Code4int_*_www.coder',
+                'host' => '',
+                'username' => '',
+                'password' => '',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],
             'messageConfig' => [
-                'from' => ['www.coder@ya.ru' => 'Site name']
+                'from' => ['' => 'Site name']
             ],
             'useFileTransport' => false,
         ]
